@@ -16,6 +16,7 @@
     </tr>
     <tr>
       <td><a href='/hello'>Hello App Engine</a></td>
+      <td><a href='/upload'>Upload file</a></td>
     </tr>
   </table>
 
