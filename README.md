@@ -21,3 +21,9 @@ gcloud beta emulators datastore start # Local only
 ```bash
 launch_server.cmd
 ```
+
+### Push an update to the magic cloud
+
+```bash
+mvn appengine:update
+```
