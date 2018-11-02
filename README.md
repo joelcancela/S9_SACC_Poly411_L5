@@ -21,3 +21,8 @@ gcloud beta emulators datastore start # Local only
 ```bash
 launch_server.cmd
 ```
+
+## Routes
+* /users
+    * GET -> Scoreboard
+    * POST -> Créer un user, payload (JSON): ```{"email":"zb@hotmail.fr","name":"BondAge"}```
