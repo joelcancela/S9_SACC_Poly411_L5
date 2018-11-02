@@ -16,24 +16,18 @@ package fr.unice.polytech.si5.cc.l5;
  * limitations under the License.
  */
 
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.blobstore.*;
 //[START gcs_imports]
-import com.google.appengine.tools.cloudstorage.GcsFileOptions;
-import com.google.appengine.tools.cloudstorage.GcsFilename;
-import com.google.appengine.tools.cloudstorage.GcsInputChannel;
-import com.google.appengine.tools.cloudstorage.GcsOutputChannel;
-import com.google.appengine.tools.cloudstorage.GcsService;
-import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
-import com.google.appengine.tools.cloudstorage.RetryParams;
+import com.google.appengine.tools.cloudstorage.*;
+
 //[END gcs_imports]
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.Channels;
 
-import javax.servlet.annotation.WebServlet;
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +41,7 @@ public class GcsExampleServlet extends HttpServlet {
 
     public static final boolean SERVE_USING_BLOBSTORE_API = false;
 
+    private static final Logger log = Logger.getLogger(GcsExampleServlet.class.getName());
     /**
      * This is where backoff parameters are configured. Here it is aggressively retrying with
      * backoff, up to 10 times but taking no more that 15 seconds total to do so.
@@ -73,10 +68,20 @@ public class GcsExampleServlet extends HttpServlet {
             BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
             BlobKey blobKey = blobstoreService.createGsBlobKey(
                     "/gs/" + fileName.getBucketName() + "/" + fileName.getObjectName());
+            BlobInfoFactory bif = new BlobInfoFactory();
+            BlobInfo bi = bif.loadBlobInfo(blobKey);
+            resp.setContentType(bi.getContentType());
+
             blobstoreService.serve(blobKey, resp);
+            //resp.getWriter().println("Pingu");
+
         } else {
             GcsInputChannel readChannel = gcsService.openPrefetchingReadChannel(fileName, 0, BUFFER_SIZE);
+            GcsFileMetadata metadata = gcsService.getMetadata(fileName);
+            GcsFileOptions options = metadata.getOptions();
+            resp.setContentType(options.getMimeType());
             copy(Channels.newInputStream(readChannel), resp.getOutputStream());
+
         }
     }
 //[END doGet]
