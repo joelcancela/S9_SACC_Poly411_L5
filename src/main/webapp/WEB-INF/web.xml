@@ -20,7 +20,7 @@
   <servlet>
     <servlet-name>PortOfFilesAPIGuestbookServlet</servlet-name>
     <servlet-class>
-      fr.unice.polytech.si5.cc.l5. PortOfFilesAPIGuestbookServlet
+      fr.unice.polytech.si5.cc.l5.PortOfFilesAPIGuestbookServlet
     </servlet-class>
   </servlet>
   <servlet-mapping>
