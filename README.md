@@ -26,3 +26,9 @@ launch_server.cmd
 * /users
     * GET -> Scoreboard
     * POST -> Créer un user, payload (JSON): ```{"email":"zb@hotmail.fr","name":"BondAge"}```
+
+### Push an update to the magic cloud
+
+```bash
+mvn appengine:update
+```
