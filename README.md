@@ -22,6 +22,12 @@ gcloud beta emulators datastore start # Local only
 launch_server.cmd
 ```
 
+## Create Bucket on Google Cloud Storage
+```
+gsutil mb gs://polar-winter-218511
+gsutil defacl set public-read gs://polar-winter-218511
+```
+
 ## Routes
 
 Host: https://polar-winter-218511.appspot.com/
