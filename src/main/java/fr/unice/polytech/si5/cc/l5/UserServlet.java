@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 @WebServlet(name = "UserServlet", value = "/users")
 public class UserServlet extends HttpServlet {
 
-	//Scoreboard
+	//Scoreboard TODO: orderby score
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -57,7 +57,7 @@ public class UserServlet extends HttpServlet {
 		IncompleteKey key = datastore.newKeyFactory().setKind("user").newKey();
 		FullEntity<IncompleteKey> aNewUser = FullEntity.newBuilder(key)
 				.set("name", userInput.getName())
-				.set("score", userInput.getScore())
+				.set("score", 0.0)
 				.set("email", userInput.getEmail()).build();
 		datastore.add(aNewUser);
 	}
