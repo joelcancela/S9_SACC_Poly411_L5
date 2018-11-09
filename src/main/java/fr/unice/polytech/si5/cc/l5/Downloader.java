@@ -24,6 +24,11 @@ import com.google.cloud.http.HttpTransportOptions.DefaultHttpTransportFactory ;
 // Stuff to check file exist
 import com.google.appengine.tools.cloudstorage.*;
 
+// Stuff to authenticate user
+import com.google.cloud.datastore.*;
+import com.google.appengine.api.datastore.Query.*;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+
 @WebServlet(name = "Downloader", value = "/download")
 public class Downloader extends HttpServlet {
 
@@ -54,7 +59,16 @@ public class Downloader extends HttpServlet {
 			return;
         }
 
-        //TODO: something to authenticate/allow user
+        //Check if user exists
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user").setFilter(PropertyFilter.eq("name", username)).build();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()) {
+            resp.setStatus(403);
+            resp.getWriter().println("Error: invalid username: " + username);
+            return;
+        }
+        Entity entity = results.next();
 
 		// Check if file exist
         GcsService fileService = GcsServiceFactory.createGcsService();
@@ -64,6 +78,12 @@ public class Downloader extends HttpServlet {
 			resp.getWriter().println("Error: file not found: " + filename);
 			return;
 		}
+
+        resp.getWriter().println("User: " + entity.getString("name"));
+        resp.getWriter().println("<br />");
+        resp.getWriter().println("Score: " + entity.getDouble("score"));
+        resp.getWriter().println("<br />");
+        resp.getWriter().println("<br />");
 
 		// Generate signedURL
         Storage storage = StorageOptions.getDefaultInstance().getService();
