@@ -21,6 +21,9 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.Storage.SignUrlOption;
 import com.google.cloud.http.HttpTransportOptions.DefaultHttpTransportFactory ;
 
+// Stuff to check file exist
+import com.google.appengine.tools.cloudstorage.*;
+
 @WebServlet(name = "Downloader", value = "/download")
 public class Downloader extends HttpServlet {
 
@@ -44,14 +47,25 @@ public class Downloader extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String filename = req.getParameter("file");
         String username = req.getParameter("username");
-        if (filename == null || username == null) {
+        String bucketName = req.getParameter("bucket");
+        if (filename == null || username == null || bucketName == null) {
             resp.setStatus(400);
-            resp.getWriter().println("Error");
+            resp.getWriter().println("Error: missing file, username or bucket");
+			return;
         }
 
         //TODO: something to authenticate/allow user
 
+		// Check if file exist
+        GcsService fileService = GcsServiceFactory.createGcsService();
+        GcsFilename file = new GcsFilename(bucketName, filename);
+		if (file == null) {
+			resp.setStatus(404);
+			resp.getWriter().println("Error: file not found: " + filename);
+			return;
+		}
 
+		// Generate signedURL
         Storage storage = StorageOptions.getDefaultInstance().getService();
         InputStream is = new ByteArrayInputStream(jsonGcsKey.getBytes());
 

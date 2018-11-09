@@ -10,7 +10,7 @@
 <h1>Download file</h1>
 
 
-<form method="post" action="/download?file=<%= request.getParameter("file") %>">
+<form method="post" action="/download?bucket=<%= request.getParameter("bucket") %>&file=<%= request.getParameter("file") %>">
     <div>
         <label for="username">Username</label>
         <input type="text" id="username" name="username">

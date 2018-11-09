@@ -7,6 +7,9 @@
     <welcome-file>upload.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
+    <jsp-file>/download.jsp</jsp-file>
+  </servlet>
+  <servlet>
     <servlet-name>GcsExample</servlet-name>
     <servlet-class>
       fr.unice.polytech.si5.cc.l5.GcsExampleServlet
