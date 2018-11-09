@@ -9,7 +9,7 @@
 <body>
 <h1>Upload file</h1>
 
-<form method="post" enctype="multipart/form-data" action="/upload">
+<form method="post" enctype="multipart/form-data" action="/gcs/polar-winter-218511">
     <div>
         <label for="file">Select file to upload</label>
         <input type="file" id="file" name="file">
