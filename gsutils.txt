@@ -1,0 +1,15 @@
+gsutil -h "Cache-Control:private, max-age=0, no-transform" cp mpv-shot0001.jpg gs://polar-winter-218511/         
+
+ gsutil setmeta -h  "Cache-Control:private, max-age=0, no-transform" gs://polar-winter-218511/*
+
+gsutil acl set private gs://polar-winter-218511/*
+gsutil acl get gs://polar-winter-218511/arbre.mp3
+
+gsutil help acls
+
+gsutil acl set authenticated-read gs://polar-winter-218511/mpv-shot0001.jpg
+
+gsutil signurl -d 10s ~/Downloads/polar-winter-218511-ea7a747610eb.json gs://polar-winter-218511/mpv-shot0001.jpg
+
+
+gsutil acl set project-private gs://polar-winter-218511/  // works with appengine and has private in the name… should be ok
