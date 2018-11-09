@@ -32,14 +32,16 @@ gsutil defacl set public-read gs://polar-winter-218511
 
 Host: https://polar-winter-218511.appspot.com/
 
-* /users
-    * GET -> Scoreboard
-    * POST -> Créer un user, payload (JSON): ```{"email":"zb@hotmail.fr","name":"BondAge"}```
-* /admin
-    * POST -> Force create user, 
+* `/users`
+    * GET → Scoreboard
+    * POST → Create a user, payload (JSON): ```{"email":"zb@hotmail.fr","name":"BondAge"}```
+* `/admin`
+    * POST → Force create user, 
         - payload (JSON): ```{"email":"casu@hotmail.fr","name":"testCasu","score":120.0}```
         - ```{"email":"leet@hotmail.fr","name":"testlee7","score":1337.7}```
-    * DELETE -> Delete all data.   
+    * DELETE → Delete all data.   
+* `/createfile/polar-winter-218511/<filename>?size=<size>`
+    * GET → Create a file named `<filename>` of size `<size>` containing random data.
 ### Push an update to the magic cloud
 
 ```bash
