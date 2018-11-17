@@ -88,6 +88,30 @@ public class Downloader extends HttpServlet {
                             14,
                             TimeUnit.SECONDS, SignUrlOption.signWith(ServiceAccountCredentials.fromStream(is)));
 
+        // Add point to uploader
+        Query<Entity> getFileInfoQuery = Query.newEntityQueryBuilder().setKind("upload").setFilter(PropertyFilter.eq("filename", filename)).build();
+        QueryResults<Entity> resultsFileInfo = datastore.run(getFileInfoQuery);
+        if (resultsFileInfo.hasNext()) {
+            Entity entityFileInfo = resultsFileInfo.next();
+            PathElement uploaderPE = entityFileInfo.getKey().getAncestors().get(0);
+            resp.getWriter().println("Querying uploader id : " + uploaderPE.getId() + "<br/>");
+
+            Key uploaderKey = datastore.newKeyFactory().setKind("user").newKey(uploaderPE.getId());
+            Query<Entity> queryUploader = Query.newEntityQueryBuilder().setKind("user").setFilter(StructuredQuery.PropertyFilter.eq("__key__", uploaderKey)).build();
+            QueryResults<Entity> uploaders = datastore.run(queryUploader);
+            if(uploaders.hasNext()) {
+                Entity uploader = uploaders.next();
+                double score = uploader.getDouble("score");
+                long filesize = entityFileInfo.getLong("size");
+
+                score += (filesize/10.0); // Uploader earns 0.1 / MB on each download
+                Entity uploaderUpdated = Entity.newBuilder(datastore.get(uploader.getKey())).set("score", score).build();
+                datastore.update(uploaderUpdated);
+                resp.getWriter().println("Uploader :" + uploader.getString("name"));
+                resp.getWriter().println("Score to add :" + score);
+            }
+        }
+
         //TODO: send mail instead of printing url in body?
         resp.getWriter().println("<a href='" + signedUrl + "'>" + signedUrl + "</a>");
 
