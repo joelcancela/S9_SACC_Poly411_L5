@@ -33,6 +33,7 @@ import com.google.appengine.tools.cloudstorage.*;
 import com.google.cloud.datastore.*;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import fr.unice.polytech.si5.cc.l5.model.UserLevel;
+import org.apache.http.client.entity.EntityBuilder;
 
 @WebServlet(name = "Downloader", value = "/download")
 public class Downloader extends HttpServlet {
@@ -76,33 +77,55 @@ public class Downloader extends HttpServlet {
         long downloadTimestamp2 = entity.getLong("downloadTimestamp2");
         long downloadTimestamp3 = entity.getLong("downloadTimestamp3");
         long downloadTimestamp4 = entity.getLong("downloadTimestamp4");
-        long nbActiveDownloads = Stream.of(downloadTimestamp1, downloadTimestamp2, downloadTimestamp3, downloadTimestamp4)
-            .filter(t -> t != 0L)
-            .count();
-        UserLevel rank = UserLevel.pointsToRank(entity.getLong("score"));
-        if (! canDownload(rank,
-            downloadTimestamp1,
-            downloadTimestamp2,
-            downloadTimestamp3,
-            downloadTimestamp4)
-        ) {
+        long nbActiveDownloads = -1;
+
+        UserLevel rank = UserLevel.pointsToRank(entity.getDouble("score"));
+        switch (rank) {
+            case NOOB:
+                nbActiveDownloads = 1;
+                break;
+            case CASUAL:
+                nbActiveDownloads = 2;
+                break;
+            case LEET:
+                nbActiveDownloads = 4;
+                break;
+            default:
+                nbActiveDownloads = 0;
+        }
+
+        int downloadIndex = canDownload(rank, downloadTimestamp1, downloadTimestamp2, downloadTimestamp3, downloadTimestamp4);
+        if (downloadIndex == 0) {
             resp.setStatus(403);
             resp.getWriter().println("You cannot have more than " + nbActiveDownloads + "download requests");
             return;
-        } else {
-            Long[] longs = addDownload(System.currentTimeMillis(), rank, downloadTimestamp1, downloadTimestamp2, downloadTimestamp3, downloadTimestamp4);
-            Entity task = Entity.newBuilder(datastore.get(entity.getKey()))
-                .set("downloadTimestamp1", longs[0])
-                .set("downloadTimestamp2", longs[1])
-                .set("downloadTimestamp3", longs[2])
-                .set("downloadTimestamp4", longs[3])
-                .build();
-            datastore.update(task);
-
+        }
+        Entity.Builder builder = Entity.newBuilder(datastore.get(entity.getKey()));
+        switch (downloadIndex) {
+            case 1:
+                builder.set("downloadTimestamp1", System.currentTimeMillis());
+                break;
+            case 2:
+                builder.set("downloadTimestamp2", System.currentTimeMillis());
+                break;
+            case 3:
+                builder.set("downloadTimestamp3", System.currentTimeMillis());
+                break;
+            case 4:
+                builder.set("downloadTimestamp4", System.currentTimeMillis());
+                break;
+            default:
+                resp.setStatus(403);
+                resp.getWriter().println("You cannot have more than " + nbActiveDownloads + "download requests");
+                return;
         }
 
+
+        Entity user = builder.build();
+        datastore.update(user);
+
         // Check if file exists
-        GcsService fileService = GcsServiceFactory.createGcsService();
+        //GcsService fileService = GcsServiceFactory.createGcsService();
         GcsFilename file = new GcsFilename(bucketName, filename);
         if (file == null) {
             resp.setStatus(404);
@@ -157,34 +180,37 @@ public class Downloader extends HttpServlet {
         }
     }
 
-    private boolean canDownload(UserLevel level, long t1, long t2, long t3, long t4) {
+    private int canDownload(UserLevel level, long t1, long t2, long t3, long t4) {
         int timeout = 60000;
-        if (level.equals(UserLevel.NOOB)) {
-            return Stream.of(t1).allMatch(t -> System.currentTimeMillis() - t <= timeout);
+        long currentTime = System.currentTimeMillis();
+        switch (level) {
+            case NOOB:
+                if (currentTime - t1 > timeout) {
+                    return 1;
+                }
+                break;
+            case CASUAL:
+                if (currentTime - t1 > timeout) {
+                    return 1;
+                } else if (currentTime - t2 > timeout){
+                    return 2;
+                }
+                break;
+            case LEET:
+                if (currentTime - t1 > timeout) {
+                    return 1;
+                } else if (currentTime - t2 > timeout) {
+                    return 2;
+                } else if (currentTime - t3 > timeout) {
+                    return 3;
+                } else if (currentTime - t4 > timeout) {
+                    return 4;
+                }
+                break;
+            default:
+                return 0;
         }
-        if (level.equals(UserLevel.CASUAL)) {
-            return Stream.of(t1, t2).allMatch(t -> System.currentTimeMillis() - t <= timeout);
-        }
-        if (level.equals(UserLevel.LEET)) {
-            return Stream.of(t1, t2, t3, t4).allMatch(t -> System.currentTimeMillis() - t <= timeout);
-        }
-        return false; //TODO: handle this properly
+        return 0;
     }
 
-    private Long[] addDownload(long timestamp, UserLevel level, long t1, long t2, long t3, long t4) {
-        if (level.equals(UserLevel.NOOB)) {
-            return new Long[]{timestamp, t2, t3, t4};
-        }
-        if (level.equals(UserLevel.CASUAL)) {
-            return t1 < t2 ? new Long[]{timestamp, t2, t3, t4} : new Long[]{t1, timestamp, t3, t4};
-        }
-        if (level.equals(UserLevel.LEET)) {
-            List <Long> values = Arrays.asList(t1, t2, t3, t4);
-            values.stream().sorted().min(Comparator.naturalOrder()).ifPresent(values::remove);
-            values.add(timestamp);
-            Long[] vals = new Long[values.size()];
-            return values.toArray(vals);
-        }
-        return new Long[]{t1, t2, t3, t4};
-    }
 }

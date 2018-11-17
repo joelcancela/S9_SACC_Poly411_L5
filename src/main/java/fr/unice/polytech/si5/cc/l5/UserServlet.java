@@ -58,6 +58,10 @@ public class UserServlet extends HttpServlet {
 		FullEntity<IncompleteKey> aNewUser = FullEntity.newBuilder(key)
 				.set("name", userInput.getName())
 				.set("score", 0.0)
+                .set("downloadTimestamp1", 0)
+                .set("downloadTimestamp2", 0)
+                .set("downloadTimestamp3", 0)
+                .set("downloadTimestamp4", 0)
 				.set("email", userInput.getEmail()).build();
 		datastore.add(aNewUser);
 	}
