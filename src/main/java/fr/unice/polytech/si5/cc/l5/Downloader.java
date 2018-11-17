@@ -6,27 +6,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 // Stuff for signed URL
 import java.net.URL;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.TimeUnit;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.auth.oauth2.*;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.Storage.SignUrlOption;
-import com.google.cloud.http.HttpTransportOptions.DefaultHttpTransportFactory ;
 
 // Stuff to check file exist
 import com.google.appengine.tools.cloudstorage.*;
 
 // Stuff to authenticate user
 import com.google.cloud.datastore.*;
-import com.google.appengine.api.datastore.Query.*;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 
 @WebServlet(name = "Downloader", value = "/download")
