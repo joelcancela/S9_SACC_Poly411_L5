@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 // Stuff to check file exist
 // Stuff to authenticate user
 
-@WebServlet(name = "Downloader", value = "/delete")
+@WebServlet(name = "Deleter", value = "/delete")
 public class Deleter extends HttpServlet {
 
     private static final String bucketName = "polar-winter-218511";
