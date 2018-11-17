@@ -35,7 +35,7 @@ public enum UserLevel {
         return requestsPerMinute;
     }
 
-    public int getFileConservationTimeout() {
-        return fileConservationTimeout;
+    public int getFileConservationTimeout() { // in ms
+        return fileConservationTimeout * 60 * 1000;
     }
 }

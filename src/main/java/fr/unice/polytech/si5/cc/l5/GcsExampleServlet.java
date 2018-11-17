@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.util.logging.Logger;
 
+import fr.unice.polytech.si5.cc.l5.model.UserLevel;
+
 //[START gcs_imports]
 //[END gcs_imports]
 
@@ -51,6 +53,7 @@ public class GcsExampleServlet extends HttpServlet {
             .retryMaxAttempts(10)
             .totalRetryPeriodMillis(15000)
             .build());
+    private final BucketManager bucketManager = new BucketManager();
 
     /**Used below to determine the size of chucks to read in. Should be > 1kb and < 10MB */
     private static final int BUFFER_SIZE = 2 * 1024 * 1024;
@@ -113,17 +116,27 @@ public class GcsExampleServlet extends HttpServlet {
             resp.getWriter().println("Error: invalid username: " + user);
             return;
         }
-
         Entity entity = results.next();
+
+        double score = entity.getDouble("score");
+
+        // bucket name depending on user level
+        UserLevel userLevel = UserLevel.pointsToRank(score);
+
         GcsFilename fileName = new GcsFilename(bucketName, getFileName(req));
         GcsOutputChannel outputChannel;
         outputChannel = gcsService.createOrReplace(fileName, instance);
         copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
+
+
+        // Schedule deletion
+        bucketManager.scheduleDeletion(fileName, userLevel.getFileConservationTimeout());
+
+
         String contentLength = req.getHeader("Content-Length");
         int size = Integer.parseInt(contentLength);
         int toadd = size/(1024*1024); // 1 point earned by MB uploaded
 
-        double score = entity.getDouble("score");
         score += toadd;
         Entity task = Entity.newBuilder(datastore.get(entity.getKey())).set("score", score).build();
         datastore.update(task);
