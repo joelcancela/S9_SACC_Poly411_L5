@@ -17,22 +17,21 @@ package fr.unice.polytech.si5.cc.l5;
  */
 
 import com.google.appengine.api.blobstore.*;
-//[START gcs_imports]
 import com.google.appengine.tools.cloudstorage.*;
 
-//[END gcs_imports]
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.ByteArrayInputStream;
 import java.nio.channels.Channels;
-
 import java.util.logging.Logger;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+//[START gcs_imports]
+//[END gcs_imports]
 
 /**
  * A simple servlet that proxies reads and writes to its Google Cloud Storage bucket.
