@@ -16,7 +16,6 @@ package fr.unice.polytech.si5.cc.l5;
  * limitations under the License.
  */
 
-import com.google.appengine.api.blobstore.*;
 import com.google.appengine.tools.cloudstorage.*;
 
 import javax.servlet.http.HttpServlet;
@@ -27,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.Channels;
-import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.logging.Logger;
 
