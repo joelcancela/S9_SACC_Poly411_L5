@@ -51,8 +51,6 @@ public class Downloader extends HttpServlet {
         "  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/polar-winter-218511%40appspot.gserviceaccount.com\"\n" +
         "}";
 
-    private static final String bucketName = "polar-winter-218511";
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String filename = req.getParameter("file");

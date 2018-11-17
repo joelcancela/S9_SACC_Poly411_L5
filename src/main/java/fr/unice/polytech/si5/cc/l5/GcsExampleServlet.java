@@ -44,7 +44,6 @@ import fr.unice.polytech.si5.cc.l5.model.UserLevel;
 public class GcsExampleServlet extends HttpServlet {
 
     public static final boolean SERVE_USING_BLOBSTORE_API = false;
-    private static final String bucketName = "polar-winter-218511";
 
     private static final Logger log = Logger.getLogger(GcsExampleServlet.class.getName());
     /**
@@ -69,7 +68,7 @@ public class GcsExampleServlet extends HttpServlet {
 //[START doGet]
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        GcsFilename fileName = new GcsFilename(bucketName, getFileName(req));
+        GcsFilename fileName = new GcsFilename(bucketManager.getDefaultBucketName(), getFileName(req));
         if (SERVE_USING_BLOBSTORE_API) {
             BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
             BlobKey blobKey = blobstoreService.createGsBlobKey(
@@ -126,7 +125,7 @@ public class GcsExampleServlet extends HttpServlet {
         // bucket name depending on user level
         UserLevel userLevel = UserLevel.pointsToRank(score);
 
-        GcsFilename fileName = new GcsFilename(bucketName, getFileName(req));
+        GcsFilename fileName = new GcsFilename(bucketManager.getDefaultBucketName(), getFileName(req));
         GcsOutputChannel outputChannel;
         outputChannel = gcsService.createOrReplace(fileName, instance);
         copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
