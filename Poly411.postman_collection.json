@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "da598d4d-e5d3-4810-91de-7ec51d31e911",
+		"_postman_id": "615f888a-f160-4fe7-b913-4ab522f2057c",
 		"name": "Poly411",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -115,6 +115,38 @@
 						}
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send an email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"to\":\"nikita.rousseau@etu.unice.fr\",\r\n   \"to_meta\":\"Nikita ROUSSEAU\",\r\n   \"subject\":\"Testing Email Service Subject (polar-winter-218511)\",\r\n   \"body\":\"This is an example of email body\"\r\n}"
+				},
+				"url": {
+					"raw": "https://polar-winter-218511.appspot.com/email",
+					"protocol": "https",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"email"
+					]
+				},
+				"description": "Send an email from AppEngine"
 			},
 			"response": []
 		}
