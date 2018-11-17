@@ -119,10 +119,11 @@ public class GcsExampleServlet extends HttpServlet {
         outputChannel = gcsService.createOrReplace(fileName, instance);
         copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
         String contentLength = req.getHeader("Content-Length");
-        Double size = new Double(contentLength);
+        int size = Integer.parseInt(contentLength);
+        int toadd = size/(1024*1024); // 1 point earned by MB uploaded
 
         double score = entity.getDouble("score");
-        score += Math.floor(size/1024*1024); // 1 point earned by MB uploaded
+        score += toadd;
         Entity task = Entity.newBuilder(datastore.get(entity.getKey())).set("score", score).build();
         datastore.update(task);
 
@@ -130,7 +131,7 @@ public class GcsExampleServlet extends HttpServlet {
         // Download link to distribute
         //TODO: sendmail
         String url = "http://" + req.getServerName() + "/download.jsp?bucket=" + fileName.getBucketName() + "&file=" + fileName.getObjectName(); // crappy way to construct an URL but whatever
-        resp.getWriter().println("<a href='" + url + "'>" + url + "</a>\nContent length : " + contentLength + "\n score : " + size/1024*1024);
+        resp.getWriter().println("<a href='" + url + "'>" + url + "</a>");
     }
 //[END doPost]
 
