@@ -18,6 +18,7 @@ package fr.unice.polytech.si5.cc.l5;
 
 import com.google.appengine.api.blobstore.*;
 import com.google.appengine.tools.cloudstorage.*;
+import com.google.cloud.datastore.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -93,11 +94,38 @@ public class GcsExampleServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         GcsFileOptions instance = new GcsFileOptions.Builder().acl("authenticated-read").cacheControl("no-cache").build();
+        String user = req.getParameter("user");
 
+        //Check if user parameter is present
+        if (user == null) {
+            resp.setStatus(403);
+            resp.getWriter().println("Error: username not provided");
+            return;
+        }
+
+        //Check if user exists
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("user").setFilter(StructuredQuery.PropertyFilter.eq("name", user)).build();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()) {
+            resp.setStatus(403);
+            resp.getWriter().println("Error: invalid username: " + user);
+            return;
+        }
+
+        Entity entity = results.next();
         GcsFilename fileName = getFileName(req);
         GcsOutputChannel outputChannel;
         outputChannel = gcsService.createOrReplace(fileName, instance);
         copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
+        String contentLength = req.getHeader("Content-Length");
+        int size = Integer.parseInt(contentLength);
+        int toadd = size/(1024*1024); // 1 point earned by MB uploaded
+
+        double score = entity.getDouble("score");
+        score += toadd;
+        Entity task = Entity.newBuilder(datastore.get(entity.getKey())).set("score", score).build();
+        datastore.update(task);
 
 
         // Download link to distribute
