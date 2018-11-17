@@ -6,22 +6,28 @@ package fr.unice.polytech.si5.cc.l5.model;
  * @author Joël CANCELA VAZ
  */
 public enum UserLevel {
-	NOOB(1, 5), CASUAL(2, 10), LEET(4, 10);
+	NOOB(1, 5, "noob"), CASUAL(2, 10, "casual"), LEET(4, 10, "leet");
 	private int requestsPerMinute;
 	private int fileConservationTimeout;
+	private String desc;
 
-	UserLevel(int requestsPerMinute, int fileConservationTimeout) {
+	UserLevel(int requestsPerMinute, int fileConservationTimeout, String desc) {
 		this.requestsPerMinute = requestsPerMinute;
 		this.fileConservationTimeout = fileConservationTimeout;
+		this.desc = desc;
 	}
 
-	public static String pointsToRank(double points) {
+	public static UserLevel pointsToRank(double points) {
 		if (points < 100) {
-			return "Noob";
+			return NOOB;
 		} else if (points < 200) {
-			return "Casual";
+			return CASUAL;
 		} else {
-			return "Leet";
+			return LEET;
 		}
 	}
+
+	public String desc() {
+	    return desc;
+    }
 }
