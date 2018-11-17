@@ -24,14 +24,14 @@
             alert("FileName is required");
             return false;
         } else {
+           var currentFile = document.getElementById("file").files[0];
             var reader = new FileReader();
             reader.onload = function (e) {
                 var request = new XMLHttpRequest();
                 request.open("POST", "/gcs/polar-winter-218511/" + filename, false);
-                request.setRequestHeader("Content-Type", "application/octet-stream");
                 request.send(e.target.result);
             };
-            reader.readAsDataURL(document.getElementById("file").files[0]);
+            reader.readAsArrayBuffer(currentFile);
 
         }
     }
