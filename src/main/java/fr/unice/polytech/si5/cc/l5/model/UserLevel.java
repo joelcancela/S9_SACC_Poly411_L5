@@ -6,7 +6,7 @@ package fr.unice.polytech.si5.cc.l5.model;
  * @author Joël CANCELA VAZ
  */
 public enum UserLevel {
-	NOOB(1, 5, "noob"), CASUAL(2, 10, "casual"), LEET(4, 10, "leet");
+	NOOB(1, 5, "noob"), CASUAL(2, 10, "casual"), LEET(4, 30, "leet");
 	private int requestsPerMinute;
 	private int fileConservationTimeout;
 	private String desc;
@@ -29,5 +29,13 @@ public enum UserLevel {
 
 	public String desc() {
 	    return desc;
+    }
+
+    public int getRequestsPerMinute() {
+        return requestsPerMinute;
+    }
+
+    public int getFileConservationTimeout() {
+        return fileConservationTimeout;
     }
 }
