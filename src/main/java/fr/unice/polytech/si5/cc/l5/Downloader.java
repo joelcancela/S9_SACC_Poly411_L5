@@ -12,6 +12,10 @@ import java.net.URL;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.TimeUnit;
+
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.auth.oauth2.*;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
@@ -61,7 +65,7 @@ public class Downloader extends HttpServlet {
             resp.getWriter().println("Error: invalid username: " + username);
             return;
         }
-        Entity entity = results.next();
+        Entity entity = results.next(); // Download profile
 
 		// Check if file exist
         GcsService fileService = GcsServiceFactory.createGcsService();
@@ -83,8 +87,8 @@ public class Downloader extends HttpServlet {
         InputStream is = new ByteArrayInputStream(jsonGcsKey.getBytes());
 
         URL signedUrl = storage.signUrl(com.google.cloud.storage.BlobInfo.newBuilder(bucketName, filename).build(),
-                            14,
-                            TimeUnit.SECONDS, SignUrlOption.signWith(ServiceAccountCredentials.fromStream(is)));
+                            5,
+                            TimeUnit.MINUTES, SignUrlOption.signWith(ServiceAccountCredentials.fromStream(is)));
 
         // Add point to uploader
         Query<Entity> getFileInfoQuery = Query.newEntityQueryBuilder().setKind("upload").setFilter(PropertyFilter.eq("filename", filename)).build();
@@ -107,11 +111,15 @@ public class Downloader extends HttpServlet {
                 datastore.update(uploaderUpdated);
                 resp.getWriter().println("Uploader :" + uploader.getString("name"));
                 resp.getWriter().println("Score to add :" + score);
+
+                //TODO: send mail instead of printing url in body?
+                resp.getWriter().println("<a href='" + signedUrl + "'>" + signedUrl + "</a>");
+                Queue queue = QueueFactory.getQueue("mail-queue");
+                queue.add(TaskOptions.Builder.withUrl("/email")
+                    .payload("{\"to\":\"" + entity.getString("email") + "\",\"to_meta\":\"" + entity.getString("name") + "\",\"subject\":\"Your download link for " + filename + "\",\"body\":\" Your file can be downloaded here : " + signedUrl + "\"} ")
+                    .method(TaskOptions.Method.POST)
+                    .header("Content-Type","application/json"));
             }
         }
-
-        //TODO: send mail instead of printing url in body?
-        resp.getWriter().println("<a href='" + signedUrl + "'>" + signedUrl + "</a>");
-
     }
 }

@@ -42,6 +42,16 @@ public class Deleter extends HttpServlet {
         GcsService fileService = GcsServiceFactory.createGcsService();
         GcsFilename file = new GcsFilename(bucketName, filename);
         boolean success = fileService.delete(file);
+
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        Query<Entity> query = Query.newEntityQueryBuilder().setKind("upload").setFilter(StructuredQuery.PropertyFilter.eq("filename", filename)).build();
+        QueryResults<Entity> results = datastore.run(query);
+
+        if (results.hasNext()) {
+            Entity fileEntity = results.next();
+            datastore.delete(fileEntity.getKey());
+        }
+
         if (!success) {
             resp.setStatus(400);
             resp.getWriter().println("Error: could not delete file " + filename);
