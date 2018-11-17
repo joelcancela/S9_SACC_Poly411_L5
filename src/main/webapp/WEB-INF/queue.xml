@@ -6,6 +6,7 @@
     </queue>
     <queue>
         <name>delete-file-queue</name>
+        <rate>5/s</rate>
     </queue>
     <queue>
         <name>my-pull-queue</name>
