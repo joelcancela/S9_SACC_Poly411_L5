@@ -20,27 +20,32 @@ import java.io.IOException;
 @WebServlet(name = "AdminServlet", value = "/admin")
 public class AdminServlet extends HttpServlet {
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-		BufferedReader reader = req.getReader();
-		User userInput = new Gson().fromJson(reader, User.class);
-		IncompleteKey key = datastore.newKeyFactory().setKind("user").newKey();
-		FullEntity<IncompleteKey> aNewUser = FullEntity.newBuilder(key)
-				.set("name", userInput.getName())
-				.set("score", userInput.getScore())
-				.set("email", userInput.getEmail()).build();
-		datastore.add(aNewUser);
-	}
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        BufferedReader reader = req.getReader();
+        User userInput = new Gson().fromJson(reader, User.class);
+        IncompleteKey key = datastore.newKeyFactory().setKind("user").newKey();
+        FullEntity <IncompleteKey> aNewUser = FullEntity.newBuilder(key)
+            .set("name", userInput.getName())
+            .set("score", userInput.getScore())
+            .set("email", userInput.getEmail())
+            .set("downloadTimestamp1", userInput.getDownloadTimestamp1())
+            .set("downloadTimestamp2", userInput.getDownloadTimestamp2())
+            .set("downloadTimestamp3", userInput.getDownloadTimestamp3())
+            .set("downloadTimestamp4", userInput.getDownloadTimestamp4())
+            .build();
+        datastore.add(aNewUser);
+    }
 
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//TODO: delete everything, add other entities
-		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-		Query<Entity> userQuery = Query.newEntityQueryBuilder().setKind("user").build();
-		QueryResults<Entity> results = datastore.run(userQuery);
-		while (results.hasNext()) {
-			datastore.delete(results.next().getKey());
-		}
-	}
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: delete everything, add other entities
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        Query <Entity> userQuery = Query.newEntityQueryBuilder().setKind("user").build();
+        QueryResults <Entity> results = datastore.run(userQuery);
+        while (results.hasNext()) {
+            datastore.delete(results.next().getKey());
+        }
+    }
 }
