@@ -127,6 +127,16 @@ public class GcsExampleServlet extends HttpServlet {
         Entity task = Entity.newBuilder(datastore.get(entity.getKey())).set("score", score).build();
         datastore.update(task);
 
+        KeyFactory keyFactory = datastore.newKeyFactory()
+            .addAncestor(PathElement.of("user", entity.getKey().getId()))
+            .setKind("upload");
+
+        IncompleteKey key = keyFactory.newKey();
+        FullEntity<IncompleteKey> aNewUser = FullEntity.newBuilder(key)
+            .set("filename", fileName.getObjectName())
+            .set("size", toadd).build(); //Size in MB
+        datastore.add(aNewUser);
+
 
         // Download link to distribute
         //TODO: sendmail
