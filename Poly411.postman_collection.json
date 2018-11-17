@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\":\"jcvd@hotmail.fr\",\"name\":\"JeanClaude\"}"
+					"raw": "{\"email\":\"mail@gmail.com\",\"name\":\"username\"}"
 				},
 				"url": {
 					"raw": "http://polar-winter-218511.appspot.com/users",
@@ -46,7 +46,7 @@
 					"file": {}
 				},
 				"url": {
-					"raw": "http://polar-winter-218511.appspot.com/gcs/pikathor.png?user=JeanClaude",
+					"raw": "http://polar-winter-218511.appspot.com/gcs/pikathor.png?user=username",
 					"protocol": "http",
 					"host": [
 						"polar-winter-218511",
@@ -60,7 +60,7 @@
 					"query": [
 						{
 							"key": "user",
-							"value": "JeanClaude"
+							"value": "username"
 						}
 					]
 				}
@@ -157,14 +157,14 @@
 		{
 			"name": "Download a file",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://polar-winter-218511.appspot.com/download.jsp?bucket=polar-winter-218511&file=FILENAME",
+					"raw": "http://polar-winter-218511.appspot.com/download=?bucket=polar-winter-218511&file=FILENAME&username=USERNAME",
 					"protocol": "http",
 					"host": [
 						"polar-winter-218511",
@@ -172,7 +172,7 @@
 						"com"
 					],
 					"path": [
-						"download.jsp"
+						"download="
 					],
 					"query": [
 						{
@@ -182,6 +182,10 @@
 						{
 							"key": "file",
 							"value": "FILENAME"
+						},
+						{
+							"key": "username",
+							"value": "USERNAME"
 						}
 					]
 				}
