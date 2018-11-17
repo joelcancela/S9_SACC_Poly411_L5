@@ -7,8 +7,8 @@
 </head>
 <body>
 <h1>Upload file</h1>
-
-<form name="submitFile" enctype="multipart/form-data">
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+<form name="submitFile" enctype="multipart/form-data" target="hiddenFrame">
     <div>
         <label for="file">Select file to upload</label>
         <input type="file" id="file" name="file">
@@ -20,15 +20,15 @@
 <script>
     function changeGetPath() {
         var filename = document.getElementById("file").files[0].name;
-        if (filename == null || filename == "") {
-            alert("FileName is required");
+        if (filename == null || filename === undefined) {
+            alert("file is required");
             return false;
         } else {
            var currentFile = document.getElementById("file").files[0];
             var reader = new FileReader();
             reader.onload = function (e) {
                 var request = new XMLHttpRequest();
-                request.open("POST", "/gcs/polar-winter-218511/" + filename, false);
+                request.open("POST", "/gcs/" + filename, false);
                 request.send(e.target.result);
             };
             reader.readAsArrayBuffer(currentFile);
