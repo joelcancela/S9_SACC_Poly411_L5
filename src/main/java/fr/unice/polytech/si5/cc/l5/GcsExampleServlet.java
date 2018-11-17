@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 public class GcsExampleServlet extends HttpServlet {
 
     public static final boolean SERVE_USING_BLOBSTORE_API = false;
+    private static final String bucketName = "polar-winter-218511";
 
     private static final Logger log = Logger.getLogger(GcsExampleServlet.class.getName());
     /**
@@ -62,7 +63,7 @@ public class GcsExampleServlet extends HttpServlet {
 //[START doGet]
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        GcsFilename fileName = getFileName(req);
+        GcsFilename fileName = new GcsFilename(bucketName, getFileName(req));
         if (SERVE_USING_BLOBSTORE_API) {
             BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
             BlobKey blobKey = blobstoreService.createGsBlobKey(
@@ -114,7 +115,7 @@ public class GcsExampleServlet extends HttpServlet {
         }
 
         Entity entity = results.next();
-        GcsFilename fileName = getFileName(req);
+        GcsFilename fileName = new GcsFilename(bucketName, getFileName(req));
         GcsOutputChannel outputChannel;
         outputChannel = gcsService.createOrReplace(fileName, instance);
         copy(req.getInputStream(), Channels.newOutputStream(outputChannel));
@@ -134,13 +135,13 @@ public class GcsExampleServlet extends HttpServlet {
     }
 //[END doPost]
 
-    private GcsFilename getFileName(HttpServletRequest req) {
-        String[] splits = req.getRequestURI().split("/", 4);
+    private String getFileName(HttpServletRequest req) {
+        String[] splits = req.getRequestURI().split("/", 3);
         if (!splits[0].equals("") || !splits[1].equals("gcs")) {
             throw new IllegalArgumentException("The URL is not formed as expected. " +
-                    "Expecting /gcs/<bucket>/<object>");
+                    "Expecting /gcs/<object>");
         }
-        return new GcsFilename(splits[2], splits[3]);
+        return splits[2];
     }
 
     /**

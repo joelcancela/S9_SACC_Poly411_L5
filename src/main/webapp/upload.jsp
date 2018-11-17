@@ -28,7 +28,7 @@
             var reader = new FileReader();
             reader.onload = function (e) {
                 var request = new XMLHttpRequest();
-                request.open("POST", "/gcs/polar-winter-218511/" + filename, false);
+                request.open("POST", "/gcs/" + filename, false);
                 request.send(e.target.result);
             };
             reader.readAsArrayBuffer(currentFile);
