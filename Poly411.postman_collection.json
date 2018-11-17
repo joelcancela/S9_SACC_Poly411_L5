@@ -132,7 +132,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"to\":\"fabrice.huet@unice.fr\",\r\n   \"to_meta\":\"Fabrice HUET\",\r\n   \"subject\":\"Testing Email Service Subject (polar-winter-218511)\",\r\n   \"body\":\"This is an example of email body\"\r\n}"
+					"raw": "{\r\n   \"to\":\"nikita.rousseau@etu.unice.fr\",\r\n   \"to_meta\":\"Nikita ROUSSEAU\",\r\n   \"subject\":\"Testing Email Service Subject (polar-winter-218511)\",\r\n   \"body\":\"This is an example of email body\"\r\n}"
 				},
 				"url": {
 					"raw": "https://polar-winter-218511.appspot.com/email",
