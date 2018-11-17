@@ -62,24 +62,4 @@ public class User {
         return downloadTimestamp4.orElse(0L);
     }
 
-    /**
-     * I was forced to do this in order to make this project work,
-     * please do not reproduce at home.
-     */
-    public void addDownload(Long timestamp) {
-        if (downloadTimestamp1.isPresent()) {
-            if (downloadTimestamp2.isPresent()) {
-                if (downloadTimestamp3.isPresent()) {
-                    if (downloadTimestamp4.isPresent()) {
-                        throw new RuntimeException();
-                    }
-                    downloadTimestamp4 = OptionalLong.of(timestamp);
-                }
-                downloadTimestamp3 = OptionalLong.of(timestamp);
-            }
-            downloadTimestamp2 = OptionalLong.of(timestamp);
-        }
-        downloadTimestamp1 = OptionalLong.of(timestamp);
-    }
-
 }
