@@ -13,6 +13,13 @@ public class Email {
     private String subject;
     private String body;
 
+    public Email() {
+        this.to = "";
+        this.to_meta = "";
+        this.subject = "";
+        this.body = "";
+    }
+
     public Email(String to, String to_meta, String subject, String body) {
         this.to = to;
         this.to_meta = to_meta;

@@ -42,6 +42,11 @@ Host: https://polar-winter-218511.appspot.com/
     * DELETE → Delete all data.   
 * `/createfile/polar-winter-218511/<filename>?size=<size>`
     * GET → Create a file named `<filename>` of size `<size>` containing random data.
+* `/email`
+    * POST → Send an email.
+        - payload (`application/json`) :
+        - ```{"to":"<email>@gmail.com","to_meta":"Firstname LASTNAME","subject":"Testing Email Service Subject","body":"This is an example of email body"}```
+
 ### Push an update to the magic cloud
 
 ```bash

@@ -23,6 +23,21 @@ public class EmailServlet extends HttpServlet {
     static String EMAIL_META = "NOREPLY @ AppEngine";
 
     @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        Gson gson = new Gson();
+        Email email = new Email(
+            "<email>@gmail.com",
+            "Firstname LASTNAME",
+            "Testing Email Service Subject",
+            "This is an example of email body"
+        );
+
+        resp.setStatus(200); // Bad Request
+        resp.getWriter().println(gson.toJson(email));
+    }
+
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         // Read input
@@ -33,7 +48,7 @@ public class EmailServlet extends HttpServlet {
             email = new Gson().fromJson(reader, Email.class);
         } catch (Exception e) {
             resp.setStatus(400); // Bad Request
-            resp.getWriter().println("La syntaxe de la requête est erronée.");
+            resp.getWriter().println("La syntaxe de la requête est erronée. (" + e.toString() + ")");
             return;
         }
 
