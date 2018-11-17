@@ -153,6 +153,40 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Download a file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://polar-winter-218511.appspot.com/download.jsp?bucket=polar-winter-218511&file=FILENAME",
+					"protocol": "http",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"download.jsp"
+					],
+					"query": [
+						{
+							"key": "bucket",
+							"value": "polar-winter-218511"
+						},
+						{
+							"key": "file",
+							"value": "FILENAME"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
