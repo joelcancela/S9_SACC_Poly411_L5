@@ -28,8 +28,6 @@ import java.util.concurrent.TimeUnit;
 @WebServlet(name = "Deleter", value = "/delete")
 public class Deleter extends HttpServlet {
 
-    private static final String bucketName = "polar-winter-218511";
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String filename = req.getParameter("file");

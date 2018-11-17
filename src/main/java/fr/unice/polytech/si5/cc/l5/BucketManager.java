@@ -10,6 +10,8 @@ import com.google.cloud.storage.*;
 import java.util.Collections;
 
 public class BucketManager {
+    private static final String DEFAULT_BUCKET_NAME = "polar-winter-218511";
+
     private Storage storage;
     private static Storage.PredefinedAcl DEFAULT_ACL = Storage.PredefinedAcl.PUBLIC_READ;
 
@@ -33,7 +35,11 @@ public class BucketManager {
     }
 
     public void createDefaultBuckets() {
-        createBucket(ApiProxy.getCurrentEnvironment().getAppId(), DEFAULT_ACL);
+        createBucket(getDefaultBucketName(), DEFAULT_ACL);
+    }
+
+    public String getDefaultBucketName() {
+        return DEFAULT_BUCKET_NAME;
     }
 
     public void scheduleDeletion(GcsFilename gcsFilename, long countdown) {
