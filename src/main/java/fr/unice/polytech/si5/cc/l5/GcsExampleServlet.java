@@ -25,10 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.ByteArrayInputStream;
 import java.nio.channels.Channels;
 import java.util.logging.Logger;
-import java.util.Map;
 
 //[START gcs_imports]
 //[END gcs_imports]
