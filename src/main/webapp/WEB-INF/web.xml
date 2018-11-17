@@ -12,7 +12,7 @@
   <servlet>
     <servlet-name>GcsExample</servlet-name>
     <servlet-class>
-      fr.unice.polytech.si5.cc.l5.GcsExampleServlet
+      fr.unice.polytech.si5.cc.l5.Uploader
     </servlet-class>
   </servlet>
   <servlet-mapping>

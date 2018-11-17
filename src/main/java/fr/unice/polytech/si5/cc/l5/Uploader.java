@@ -23,6 +23,7 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.tools.cloudstorage.*;
 import com.google.cloud.datastore.*;
 
+import javax.rmi.CORBA.Util;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import java.nio.channels.Channels;
 import java.util.logging.Logger;
 
 import fr.unice.polytech.si5.cc.l5.model.UserLevel;
+import fr.unice.polytech.si5.cc.l5.model.Utils;
 
 //[START gcs_imports]
 //[END gcs_imports]
@@ -41,11 +43,11 @@ import fr.unice.polytech.si5.cc.l5.model.UserLevel;
  * A simple servlet that proxies reads and writes to its Google Cloud Storage bucket.
  */
 @SuppressWarnings("serial")
-public class GcsExampleServlet extends HttpServlet {
+public class Uploader extends HttpServlet {
 
     public static final boolean SERVE_USING_BLOBSTORE_API = false;
 
-    private static final Logger log = Logger.getLogger(GcsExampleServlet.class.getName());
+    private static final Logger log = Logger.getLogger(Uploader.class.getName());
     /**
      * This is where backoff parameters are configured. Here it is aggressively retrying with
      * backoff, up to 10 times but taking no more that 15 seconds total to do so.
@@ -119,6 +121,21 @@ public class GcsExampleServlet extends HttpServlet {
             return;
         }
         Entity entity = results.next();
+        long downloadTimestamp1 = entity.getLong("downloadTimestamp1");
+        long downloadTimestamp2 = entity.getLong("downloadTimestamp2");
+        long downloadTimestamp3 = entity.getLong("downloadTimestamp3");
+        long downloadTimestamp4 = entity.getLong("downloadTimestamp4");
+
+        UserLevel rank = UserLevel.pointsToRank(entity.getDouble("score"));
+        long nbActiveDownloads = Utils.getActionsMax(rank);
+
+        int downloadIndex = Utils.canDownload(rank, downloadTimestamp1, downloadTimestamp2, downloadTimestamp3, downloadTimestamp4);
+        if (downloadIndex == 0) {
+            resp.setStatus(403);
+            resp.getWriter().println(Utils.getErrorActionMessage(nbActiveDownloads));
+            return;
+        }
+        Utils.updateTimestamp(downloadIndex,entity.getKey(), datastore);
 
         double score = entity.getDouble("score");
 

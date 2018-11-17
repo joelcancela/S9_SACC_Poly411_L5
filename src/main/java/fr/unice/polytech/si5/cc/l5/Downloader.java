@@ -1,39 +1,32 @@
 package fr.unice.polytech.si5.cc.l5;
 
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.appengine.tools.cloudstorage.GcsFilename;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.datastore.*;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.Storage.SignUrlOption;
+import com.google.cloud.storage.StorageOptions;
+import fr.unice.polytech.si5.cc.l5.model.UserLevel;
+import fr.unice.polytech.si5.cc.l5.model.Utils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 // Stuff for signed URL
-import java.net.URL;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
-
-
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
-import com.google.auth.oauth2.*;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
-import com.google.cloud.storage.Storage.SignUrlOption;
-
 // Stuff to check file exist
-import com.google.appengine.tools.cloudstorage.*;
-
 // Stuff to authenticate user
-import com.google.cloud.datastore.*;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import fr.unice.polytech.si5.cc.l5.model.UserLevel;
-import org.apache.http.client.entity.EntityBuilder;
 
 @WebServlet(name = "Downloader", value = "/download")
 public class Downloader extends HttpServlet {
@@ -77,52 +70,18 @@ public class Downloader extends HttpServlet {
         long downloadTimestamp2 = entity.getLong("downloadTimestamp2");
         long downloadTimestamp3 = entity.getLong("downloadTimestamp3");
         long downloadTimestamp4 = entity.getLong("downloadTimestamp4");
-        long nbActiveDownloads = -1;
+
 
         UserLevel rank = UserLevel.pointsToRank(entity.getDouble("score"));
-        switch (rank) {
-            case NOOB:
-                nbActiveDownloads = 1;
-                break;
-            case CASUAL:
-                nbActiveDownloads = 2;
-                break;
-            case LEET:
-                nbActiveDownloads = 4;
-                break;
-            default:
-                nbActiveDownloads = 0;
-        }
+        long nbActiveDownloads = Utils.getActionsMax(rank);
 
-        int downloadIndex = canDownload(rank, downloadTimestamp1, downloadTimestamp2, downloadTimestamp3, downloadTimestamp4);
+        int downloadIndex = Utils.canDownload(rank, downloadTimestamp1, downloadTimestamp2, downloadTimestamp3, downloadTimestamp4);
         if (downloadIndex == 0) {
             resp.setStatus(403);
-            resp.getWriter().println("You cannot have more than " + nbActiveDownloads + "download requests");
+            resp.getWriter().println(Utils.getErrorActionMessage(nbActiveDownloads));
             return;
         }
-        Entity.Builder builder = Entity.newBuilder(datastore.get(entity.getKey()));
-        switch (downloadIndex) {
-            case 1:
-                builder.set("downloadTimestamp1", System.currentTimeMillis());
-                break;
-            case 2:
-                builder.set("downloadTimestamp2", System.currentTimeMillis());
-                break;
-            case 3:
-                builder.set("downloadTimestamp3", System.currentTimeMillis());
-                break;
-            case 4:
-                builder.set("downloadTimestamp4", System.currentTimeMillis());
-                break;
-            default:
-                resp.setStatus(403);
-                resp.getWriter().println("You cannot have more than " + nbActiveDownloads + "download requests");
-                return;
-        }
-
-
-        Entity user = builder.build();
-        datastore.update(user);
+        Utils.updateTimestamp(downloadIndex,entity.getKey(), datastore);
 
         // Check if file exists
         //GcsService fileService = GcsServiceFactory.createGcsService();
@@ -178,39 +137,6 @@ public class Downloader extends HttpServlet {
                     .header("Content-Type","application/json"));
             }
         }
-    }
-
-    private int canDownload(UserLevel level, long t1, long t2, long t3, long t4) {
-        int timeout = 60000;
-        long currentTime = System.currentTimeMillis();
-        switch (level) {
-            case NOOB:
-                if (currentTime - t1 > timeout) {
-                    return 1;
-                }
-                break;
-            case CASUAL:
-                if (currentTime - t1 > timeout) {
-                    return 1;
-                } else if (currentTime - t2 > timeout){
-                    return 2;
-                }
-                break;
-            case LEET:
-                if (currentTime - t1 > timeout) {
-                    return 1;
-                } else if (currentTime - t2 > timeout) {
-                    return 2;
-                } else if (currentTime - t3 > timeout) {
-                    return 3;
-                } else if (currentTime - t4 > timeout) {
-                    return 4;
-                }
-                break;
-            default:
-                return 0;
-        }
-        return 0;
     }
 
 }
