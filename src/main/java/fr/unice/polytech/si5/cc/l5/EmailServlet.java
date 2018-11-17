@@ -27,7 +27,7 @@ public class EmailServlet extends HttpServlet {
 
         Gson gson = new Gson();
         Email email = new Email(
-            "<email>@gmail.com",
+            "some_email_address@gmail.com",
             "Firstname LASTNAME",
             "Testing Email Service Subject",
             "This is an example of email body"
