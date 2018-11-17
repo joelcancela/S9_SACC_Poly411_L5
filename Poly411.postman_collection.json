@@ -122,6 +122,37 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Send a mail",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"to\":\"mail@gmail.com\",\"to_meta\":\"Recipient\",\"subject\":\"Testing Email Service Subject\",\"body\":\"This is an example of email body\"} "
+				},
+				"url": {
+					"raw": "http://polar-winter-218511.appspot.com/email",
+					"protocol": "http",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"email"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
