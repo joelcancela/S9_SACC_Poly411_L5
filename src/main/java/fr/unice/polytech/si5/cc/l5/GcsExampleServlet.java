@@ -17,6 +17,9 @@ package fr.unice.polytech.si5.cc.l5;
  */
 
 import com.google.appengine.api.blobstore.*;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.tools.cloudstorage.*;
 import com.google.cloud.datastore.*;
 
@@ -156,6 +159,12 @@ public class GcsExampleServlet extends HttpServlet {
         //TODO: sendmail
         String url = "http://" + req.getServerName() + "/download.jsp?bucket=" + fileName.getBucketName() + "&file=" + fileName.getObjectName(); // crappy way to construct an URL but whatever
         resp.getWriter().println("<a href='" + url + "'>" + url + "</a>");
+
+        Queue queue = QueueFactory.getQueue("mail-queue");
+        queue.add(TaskOptions.Builder.withUrl("/email")
+            .payload("{\"to\":\"" + entity.getString("email") + "\",\"to_meta\":\"" + entity.getString("name") + "\",\"subject\":\"Thank you for your upload of " + fileName + "\",\"body\":\"" + "Your file can be downloaded here : " + url + "\"} ")
+            .method(TaskOptions.Method.POST)
+            .header("Content-Type","application/json"));
     }
 //[END doPost]
 

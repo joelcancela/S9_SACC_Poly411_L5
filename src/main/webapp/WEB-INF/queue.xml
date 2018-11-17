@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <queue-entries>
     <queue>
-        <name>article-queue</name>
-        <rate>5/s</rate>
+      <name>article-queue</name>
+      <rate>5/s</rate>
     </queue>
     <queue>
-        <name>delete-file-queue</name>
-        <rate>5/s</rate>
+      <name>delete-file-queue</name>
+      <rate>5/s</rate>
     </queue>
     <queue>
-        <name>my-pull-queue</name>
-        <mode>pull</mode>
+      <name>mail-queue</name>
+      <rate>5/s</rate>
+    </queue>
+    <queue>
+      <name>my-pull-queue</name>
+      <mode>pull</mode>
     </queue>
 </queue-entries>
