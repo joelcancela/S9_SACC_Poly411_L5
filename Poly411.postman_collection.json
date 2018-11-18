@@ -52,7 +52,7 @@
 			"name": "UsersCreation",
 			"item": [
 				{
-					"name": "Add Norbert as Leet",
+					"name": "Add Norbert as Noob",
 					"event": [
 						{
 							"listen": "test",
@@ -97,7 +97,7 @@
 					"response": []
 				},
 				{
-					"name": "Add Croyance as Leet",
+					"name": "Add Croyance as Noob",
 					"event": [
 						{
 							"listen": "test",
@@ -214,7 +214,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"caveira@yopmail.com\",\n  \"name\": \"caveira\",\n  \"score\": 142.0\n}"
+							"raw": "{\n  \"email\": \"caveira@yopmail.com\",\n  \"name\": \"caveira\",\n  \"score\": 199.0\n}"
 						},
 						"url": {
 							"raw": "https://polar-winter-218511.appspot.com/admin",
@@ -232,7 +232,7 @@
 					"response": []
 				},
 				{
-					"name": "Add EpicSaxGuy as Noob",
+					"name": "Add EpicSaxGuy as Leet",
 					"event": [
 						{
 							"listen": "test",
@@ -277,7 +277,7 @@
 					"response": []
 				},
 				{
-					"name": "Add DiabloOnMobile as Noob",
+					"name": "Add DiabloOnMobile as Leet",
 					"event": [
 						{
 							"listen": "test",
@@ -336,6 +336,10 @@
 								"exec": [
 									"pm.test(\"file uploaded\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body has no errors\", function () {\r",
+									"    pm.expect(pm.response.text()).to.not.include(\"error\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -506,6 +510,1108 @@
 			]
 		},
 		{
+			"name": "UploadRewardLevelUpLeet",
+			"item": [
+				{
+					"name": "Get user score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a264e52-1b4a-4a4b-a73b-f51cc9c327e8",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"});",
+									"",
+									"pm.test(\"Body matches uploader username\", function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"USERNAME2\"));",
+									"});",
+									"",
+									"// Load cheerio library and parse response",
+									"const $ = cheerio.load(pm.response.text());",
+									"var rows = $('th');",
+									"",
+									"// Get username2 score",
+									"pm.globals.set(\"username2_score\", -1);",
+									"for (i = 0; i < rows.length; i++) {",
+									"    var row = rows[i];",
+									"    if (row.children[0].data == pm.variables.get(\"USERNAME2\")) {",
+									"        // Found",
+									"        var scoreRow = rows[i+1].children[0].data;",
+									"        pm.globals.set(\"username2_score\", scoreRow);",
+									"        break;",
+									"    }",
+									"}",
+									"",
+									"// Test score before going further",
+									"pm.test(\"score is coherent\", function () {",
+									"    pm.globals.get(\"username2_score\") > -1",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/users",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload a file of 2026 ko",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a35a15c-bca9-4164-beab-ee24fa25f63c",
+								"exec": [
+									"pm.test(\"file uploaded\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body has no errors\", function () {\r",
+									"    pm.expect(pm.response.text()).to.not.include(\"error\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/gcs/{{FILENAME}}?user={{USERNAME2}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"gcs",
+								"{{FILENAME}}"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "{{USERNAME2}}",
+									"description": "Username as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify user score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5bbe909b-b697-400c-a283-5e01e02608a2",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"});",
+									"",
+									"pm.test(\"Body matches uploader username\", function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"USERNAME2\"));",
+									"});",
+									"",
+									"// Load cheerio library and parse response",
+									"const $ = cheerio.load(pm.response.text());",
+									"var rows = $('th');",
+									"",
+									"// Get username2 score",
+									"pm.globals.set(\"username2_score_updated\", -1);",
+									"for (i = 0; i < rows.length; i++) {",
+									"    var row = rows[i];",
+									"    if (row.children[0].data == pm.variables.get(\"USERNAME2\")) {",
+									"        // Found",
+									"        var scoreRow = rows[i+1].children[0].data;",
+									"        pm.globals.set(\"username2_score_updated\", scoreRow);",
+									"        break;",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"score is coherent\", function () {",
+									"    pm.globals.get(\"username2_score_updated\") > -1",
+									"});",
+									"",
+									"// Test score",
+									"pm.test(\"score has increased of at least 1 point\", function () {",
+									"    pm.globals.get(\"username2_score_updated\") >= (pm.globals.get(\"username2_score\") + 1);",
+									"});",
+									"",
+									"// Clear vars",
+									"pm.globals.unset(\"username2_score\");",
+									"pm.globals.unset(\"username2_score_updated\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/users",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DownloadReward",
+			"item": [
+				{
+					"name": "Get user score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a264e52-1b4a-4a4b-a73b-f51cc9c327e8",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"});",
+									"",
+									"pm.test(\"Body matches uploader username\", function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"USERNAME2\"));",
+									"});",
+									"",
+									"// Load cheerio library and parse response",
+									"const $ = cheerio.load(pm.response.text());",
+									"var rows = $('th');",
+									"",
+									"// Get username2 score",
+									"pm.globals.set(\"username2_score\", -1);",
+									"for (i = 0; i < rows.length; i++) {",
+									"    var row = rows[i];",
+									"    if (row.children[0].data == pm.variables.get(\"USERNAME2\")) {",
+									"        // Found",
+									"        var scoreRow = rows[i+1].children[0].data;",
+									"        pm.globals.set(\"username2_score\", scoreRow);",
+									"        break;",
+									"    }",
+									"}",
+									"",
+									"// Test score before going further",
+									"pm.test(\"score is coherent\", function () {",
+									"    pm.globals.get(\"username2_score\") > -1",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/users",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									"",
+									"// Load cheerio library and parse response",
+									"const $ = cheerio.load(pm.response.text())",
+									"",
+									"// Resolve download link",
+									"pm.globals.set(\"download_link\", $('a').text());",
+									"console.info(pm.globals.get(\"download_link\"));",
+									"",
+									"// Try to download the file",
+									"pm.sendRequest(pm.globals.get(\"download_link\"), function (err, response) {",
+									"    pm.test(\"downloading is ok\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{USERNAME}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify user score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5bbe909b-b697-400c-a283-5e01e02608a2",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"});",
+									"",
+									"pm.test(\"Body matches uploader username\", function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.variables.get(\"USERNAME2\"));",
+									"});",
+									"",
+									"// Load cheerio library and parse response",
+									"const $ = cheerio.load(pm.response.text());",
+									"var rows = $('th');",
+									"",
+									"// Get username2 score",
+									"pm.globals.set(\"username2_score_updated\", -1);",
+									"for (i = 0; i < rows.length; i++) {",
+									"    var row = rows[i];",
+									"    if (row.children[0].data == pm.variables.get(\"USERNAME2\")) {",
+									"        // Found",
+									"        var scoreRow = rows[i+1].children[0].data;",
+									"        pm.globals.set(\"username2_score_updated\", scoreRow);",
+									"        break;",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"score is coherent\", function () {",
+									"    pm.globals.get(\"username2_score_updated\") > -1",
+									"});",
+									"",
+									"// Test score",
+									"pm.test(\"score has increased of at least 1 point\", function () {",
+									"    pm.globals.get(\"username2_score_updated\") >= (pm.globals.get(\"username2_score\") + 0.1);",
+									"});",
+									"",
+									"// Clear vars",
+									"pm.globals.unset(\"username2_score\");",
+									"pm.globals.unset(\"username2_score_updated\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/users",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DownloadLimiter",
+			"item": [
+				{
+					"name": "Download a file leet 1 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "epicsaxguy",
+									"description": "Leet guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file leet 2 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "epicsaxguy",
+									"description": "Leet guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file leet 3 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "epicsaxguy",
+									"description": "Leet guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file leet 4 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "epicsaxguy",
+									"description": "Leet guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file leet 5 KO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be not valid\", function () {",
+									"    pm.response.to.not.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body must not contain download string\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "epicsaxguy",
+									"description": "Leet guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file casual 1 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "wizard",
+									"description": "Casual guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file casual 2 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "wizard",
+									"description": "Casual guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file casual 3 KO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be not valid\", function () {",
+									"    pm.response.to.not.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body must not contain download string\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "wizard",
+									"description": "Casual guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file noob 1 OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "croyance",
+									"description": "Noob guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file noob 2 KO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be not valid\", function () {",
+									"    pm.response.to.not.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body must not contain download string\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "croyance",
+									"description": "Noob guy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "API",
 			"item": [
 				{
@@ -621,21 +1727,33 @@
 	],
 	"variable": [
 		{
-			"id": "e2a88af2-ff8e-4343-a28b-d5be42d172ab",
+			"id": "82dc1f18-eccf-4c2d-bbf8-7c80b7c65f64",
 			"key": "USERNAME",
 			"value": "croyance",
 			"type": "string"
 		},
 		{
-			"id": "66bfc7b3-829a-4f65-8b7c-7b13b9fad03f",
+			"id": "389ff5b7-de37-4056-a73a-4d656ef8ae06",
 			"key": "USERNAME2",
-			"value": "norbert",
+			"value": "caveira",
 			"type": "string"
 		},
 		{
-			"id": "9d8a1b39-30b9-4856-82ce-b1ee5428492e",
+			"id": "10ba5d15-819e-4e4c-8cff-2a1ff1de2a61",
 			"key": "FILENAME",
 			"value": "pikathor.png",
+			"type": "string"
+		},
+		{
+			"id": "af583347-0721-4060-8283-5a03da02d207",
+			"key": "username2_score",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "25c5ecc6-7f59-4de7-896e-6b9a6d65cf24",
+			"key": "username2_score_updated",
+			"value": "",
 			"type": "string"
 		}
 	]

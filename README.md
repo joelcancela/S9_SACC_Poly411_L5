@@ -34,10 +34,30 @@ https://polar-winter-218511.appspot.com/
 - Le fichier `Poly411.postman_collection.json` contient l'ensemble des requêtes possibles vers l'API du projet
 - Les scénarios utilisent une suite de tests pour vérifier le fonctionnement attendu
   * Chaque `Dossier` de la `Collection` est un `Scénario`.
+  * `API` est un dossier spécial contenant des requêtes particulières. Ce n'est pas un scénario.
 - Pour paramétriser les requêtes, des variables de collection sont disponibles.
   * Sur la collection, `Edit`, puis `Variables`
   * __Nota bene__ : ne pas confondre les dossiers et les collections.
   * La variable `USERNAME2` permet de télécharger le fichier sous un autre homonyme, de sorte à éviter la restriction de l'utilisateur ayant uploadé le fichier.
+  * Les fichiers à `UPLOADER` doivent être spécifiés en amont de l'execution du scénario !
+    * On suggère d'utiliser `pikathor.png` à la racine du projet
+    * Il faut s'assurer que le fichier à uploader est spécifié dans les requêtes d'upload. Passé un temps, Postman remet à zéro le body de la requête.
+
+### Création de 6 utilisateurs, 2 Noob, 2 Casual, 2 Leet
+
+Scénario : `UsersCreation`
+
+### Upload et Montée du score d'un Casual vers Leet
+
+Scénario : `UploadRewardLevelUpLeet`
+
+### Download et gain de points à l'uploader
+
+Scénario : `DownloadReward`
+
+### Rate limiter et Téléchargement en parallèle pour différents utilisateurs
+
+Scénario : `DownloadLimiter`
 
 ## Notes/Bugs
 
