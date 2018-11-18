@@ -41,15 +41,15 @@ https://polar-winter-218511.appspot.com/
 
 ## Notes/Bugs
 
-- L'identifiant utilisé dans toutes les requêtes pour identifier l'utilisateur est son nom
-- L'identifiant utilisé pour identifier un fichier est son nom.
+- L'identifiant utilisé dans toutes les requêtes pour identifier l'utilisateur est son nom (au lieu de son email)
+- L'identifiant utilisé pour identifier un fichier est son nom avec son extension
 - Possibilité de "s'auto-boost" en téléchargeant ses propres fichiers.
 
 ## TODO
 
 - Déduplication des fichiers
--  (partie Scénarios de test)
 - Verifier l'API admin (partie Particularités pour le projet)
+- Ne pas utiliser de fichiers contenant des espaces.
 
 ## Commands
 
