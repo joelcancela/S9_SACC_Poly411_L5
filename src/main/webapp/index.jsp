@@ -16,7 +16,6 @@
     <tr>
       <td><a href='/signup.jsp'>Sign up</a></td>
       <td><a href='/upload.jsp'>Upload file</a></td>
-      <td><a href='/download.jsp'>Download file</a></td>
       <td><a href='/users'>Scoreboard</a></td>
     </tr>
   </table>
