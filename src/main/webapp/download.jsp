@@ -4,7 +4,7 @@
 <html>
 <head>
     <link href='//fonts.googleapis.com/css?family=Marmelad' rel='stylesheet' type='text/css'>
-    <title>Hello App Engine Standard Java 8</title>
+    <title>Poly411 - Download file</title>
 </head>
 <body>
 <h1>Download file</h1>
