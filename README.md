@@ -29,6 +29,16 @@ https://polar-winter-218511.appspot.com/
 - Un système de score permet de récompenser les utilisateurs qui uploadent des fichiers populaires
 - Un leaderboard est accessible sous forme de page web. Lien: https://polar-winter-218511.appspot.com/users
 
+## Scénarios de test
+
+- Le fichier `Poly411.postman_collection.json` contient l'ensemble des requêtes possibles vers l'API du projet
+- Les scénarios utilisent une suite de tests pour vérifier le fonctionnement attendu
+  * Chaque `Dossier` de la `Collection` est un `Scénario`.
+- Pour paramétriser les requêtes, des variables de collection sont disponibles.
+  * Sur la collection, `Edit`, puis `Variables`
+  * __Nota bene__ : ne pas confondre les dossiers et les collections.
+  * La variable `USERNAME2` permet de télécharger le fichier sous un autre homonyme, de sorte à éviter la restriction de l'utilisateur ayant uploadé le fichier.
+
 ## Notes/Bugs
 
 - L'identifiant utilisé dans toutes les requêtes pour identifier l'utilisateur est son nom
@@ -38,7 +48,7 @@ https://polar-winter-218511.appspot.com/
 ## TODO
 
 - Déduplication des fichiers
-- Scénarios de test (partie Scénarios de test)
+-  (partie Scénarios de test)
 - Verifier l'API admin (partie Particularités pour le projet)
 
 ## Commands

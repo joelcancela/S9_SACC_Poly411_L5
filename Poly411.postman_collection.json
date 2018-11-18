@@ -1,10 +1,53 @@
 {
 	"info": {
-		"_postman_id": "5e042de0-722f-49b3-ac2b-9a687f76f948",
+		"_postman_id": "6c1260fa-35f1-4843-8e81-1e64c51d84ef",
 		"name": "Poly411",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "DeleteEverything",
+			"item": [
+				{
+					"name": "Delete everything",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "24d160cb-c447-4bf8-af38-86a76ae03453",
+								"exec": [
+									"pm.test(\"flush database\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://polar-winter-218511.appspot.com/admin",
+							"protocol": "http",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "UsersCreation",
 			"item": [
@@ -281,6 +324,188 @@
 			]
 		},
 		{
+			"name": "UploadDownloadCreateRandom",
+			"item": [
+				{
+					"name": "Upload a file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a35a15c-bca9-4164-beab-ee24fa25f63c",
+								"exec": [
+									"pm.test(\"file uploaded\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/gcs/{{FILENAME}}?user={{USERNAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"gcs",
+								"{{FILENAME}}"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "{{USERNAME}}",
+									"description": "Username as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "505e0bea-7613-4173-a403-0f2b1c28d290",
+								"exec": [
+									"pm.test(\"response must be valid\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test(\"Body matches download string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"<a href='https://storage.googleapis.com/polar-winter-218511/\");",
+									"});",
+									"",
+									"// Load cheerio library and parse response",
+									"const $ = cheerio.load(pm.response.text())",
+									"",
+									"// Resolve download link",
+									"pm.globals.set(\"download_link\", $('a').text());",
+									"console.info(pm.globals.get(\"download_link\"));",
+									"",
+									"// Try to download the file",
+									"pm.sendRequest(pm.globals.get(\"download_link\"), function (err, response) {",
+									"    pm.test(\"downloading is ok\", function () {",
+									"        pm.response.to.be.ok;",
+									"    });",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{USERNAME2}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file={{FILENAME}}",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"download"
+							],
+							"query": [
+								{
+									"key": "bucket",
+									"value": "polar-winter-218511"
+								},
+								{
+									"key": "file",
+									"value": "{{FILENAME}}",
+									"description": "Filename to download as Collection Var"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a random file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a63850c8-76d0-4a3d-886e-207a2d49bb46",
+								"exec": [
+									"pm.test(\"random file created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://polar-winter-218511.appspot.com/createfile/polar-winter-218511/foo.txt?size=10",
+							"protocol": "https",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"createfile",
+								"polar-winter-218511",
+								"foo.txt"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Taille en Octets pour foo.txt"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "API",
 			"item": [
 				{
@@ -315,37 +540,6 @@
 					"response": []
 				},
 				{
-					"name": "Post a file",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "file",
-							"file": {}
-						},
-						"url": {
-							"raw": "http://polar-winter-218511.appspot.com/gcs/FILENAME?user=USERNAME",
-							"protocol": "http",
-							"host": [
-								"polar-winter-218511",
-								"appspot",
-								"com"
-							],
-							"path": [
-								"gcs",
-								"FILENAME"
-							],
-							"query": [
-								{
-									"key": "user",
-									"value": "USERNAME"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Userboard",
 					"request": {
 						"method": "GET",
@@ -364,38 +558,6 @@
 							],
 							"path": [
 								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create a random file",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "https://polar-winter-218511.appspot.com/createfile/polar-winter-218511/foo.txt?size=10",
-							"protocol": "https",
-							"host": [
-								"polar-winter-218511",
-								"appspot",
-								"com"
-							],
-							"path": [
-								"createfile",
-								"polar-winter-218511",
-								"foo.txt"
-							],
-							"query": [
-								{
-									"key": "size",
-									"value": "10"
-								}
 							]
 						}
 					},
@@ -431,68 +593,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Download a file",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file=FILENAME&username=USERNAME",
-							"protocol": "http",
-							"host": [
-								"polar-winter-218511",
-								"appspot",
-								"com"
-							],
-							"path": [
-								"download"
-							],
-							"query": [
-								{
-									"key": "bucket",
-									"value": "polar-winter-218511"
-								},
-								{
-									"key": "file",
-									"value": "FILENAME"
-								},
-								{
-									"key": "username",
-									"value": "USERNAME"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete everything",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://polar-winter-218511.appspot.com/admin",
-							"protocol": "http",
-							"host": [
-								"polar-winter-218511",
-								"appspot",
-								"com"
-							],
-							"path": [
-								"admin"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		}
@@ -517,6 +617,26 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"id": "e2a88af2-ff8e-4343-a28b-d5be42d172ab",
+			"key": "USERNAME",
+			"value": "croyance",
+			"type": "string"
+		},
+		{
+			"id": "66bfc7b3-829a-4f65-8b7c-7b13b9fad03f",
+			"key": "USERNAME2",
+			"value": "norbert",
+			"type": "string"
+		},
+		{
+			"id": "9d8a1b39-30b9-4856-82ce-b1ee5428492e",
+			"key": "FILENAME",
+			"value": "pikathor.png",
+			"type": "string"
 		}
 	]
 }
