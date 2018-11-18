@@ -41,7 +41,7 @@ public class UserServlet extends HttpServlet {
 			Entity entity = results.next();
 			out.format("<tr>\n" +
 							"    <th>%s</th>\n" +
-							"    <th>%s</th>\n" +
+							"    <th>%.02f</th>\n" +
 							"    <th>%s</th>\n" +
 							"  </tr>", entity.getString("name"), entity.getDouble("score"),
 					UserLevel.pointsToRank(entity.getDouble("score")));

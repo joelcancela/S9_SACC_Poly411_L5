@@ -79,6 +79,13 @@ public class Downloader extends HttpServlet {
         if (downloadIndex == 0) {
             resp.setStatus(403);
             resp.getWriter().println(Utils.getErrorActionMessage(nbActiveDownloads));
+            Queue queue = QueueFactory.getQueue("mail-queue");
+            queue.add(TaskOptions.Builder.withUrl("/email")
+                .payload("{\"to\":\"" + entity.getString("email") + "\",\"to_meta\":\"" +
+                    entity.getString("name") + "\",\"subject\":\"Your download link for "
+                    + filename + "\",\"body\":\" lol non noob\"} ")
+                .method(TaskOptions.Method.POST)
+                .header("Content-Type","application/json"));
             return;
         }
         Utils.updateTimestamp(downloadIndex,entity.getKey(), datastore);
