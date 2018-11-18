@@ -1,36 +1,161 @@
 {
 	"info": {
-		"_postman_id": "de7670b0-eefa-4cbe-9046-24aa37bbb856",
-		"name": "AL",
+		"_postman_id": "da598d4d-e5d3-4810-91de-7ec51d31e911",
+		"name": "Poly411",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "http://localhost:5000/user/login",
+			"name": "Add a user",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\"email\":\"mail@gmail.com\",\"name\":\"username\"}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/user/login",
+					"raw": "http://polar-winter-218511.appspot.com/users",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"polar-winter-218511",
+						"appspot",
+						"com"
 					],
-					"port": "5000",
 					"path": [
-						"user",
-						"login"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:5000/delivery",
+			"name": "Post a file",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://polar-winter-218511.appspot.com/gcs/FILENAME?user=USERNAME",
+					"protocol": "http",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"gcs",
+						"FILENAME"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "USERNAME"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Userboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://polar-winter-218511.appspot.com/users",
+					"protocol": "http",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a random file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://polar-winter-218511.appspot.com/createfile/polar-winter-218511/foo.txt?size=10",
+					"protocol": "https",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"createfile",
+						"polar-winter-218511",
+						"foo.txt"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send a mail",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"to\":\"mail@gmail.com\",\"to_meta\":\"Recipient\",\"subject\":\"Testing Email Service Subject\",\"body\":\"This is an example of email body\"} "
+				},
+				"url": {
+					"raw": "http://polar-winter-218511.appspot.com/email",
+					"protocol": "http",
+					"host": [
+						"polar-winter-218511",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download a file",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -39,14 +164,29 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:5000/delivery",
+					"raw": "http://polar-winter-218511.appspot.com/download?bucket=polar-winter-218511&file=FILENAME&username=USERNAME",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"polar-winter-218511",
+						"appspot",
+						"com"
 					],
-					"port": "5000",
 					"path": [
-						"delivery"
+						"download"
+					],
+					"query": [
+						{
+							"key": "bucket",
+							"value": "polar-winter-218511"
+						},
+						{
+							"key": "file",
+							"value": "FILENAME"
+						},
+						{
+							"key": "username",
+							"value": "USERNAME"
+						}
 					]
 				}
 			},
