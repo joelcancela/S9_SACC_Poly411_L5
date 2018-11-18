@@ -47,5 +47,10 @@ public class AdminServlet extends HttpServlet {
         while (results.hasNext()) {
             datastore.delete(results.next().getKey());
         }
+        userQuery = Query.newEntityQueryBuilder().setKind("upload").build();
+        results = datastore.run(userQuery);
+        while (results.hasNext()) {
+            datastore.delete(results.next().getKey());
+        }
     }
 }

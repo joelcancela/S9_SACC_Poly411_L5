@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "72314485-b104-4729-8ab3-43b29380df89",
+		"_postman_id": "5e042de0-722f-49b3-ac2b-9a687f76f948",
 		"name": "Poly411",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -465,6 +465,30 @@
 									"key": "username",
 									"value": "USERNAME"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete everything",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://polar-winter-218511.appspot.com/admin",
+							"protocol": "http",
+							"host": [
+								"polar-winter-218511",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"admin"
 							]
 						}
 					},

@@ -26,7 +26,8 @@ public class UserServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user").build();
+		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user").setOrderBy(StructuredQuery.OrderBy.desc(
+		    "score")).build();
 		QueryResults<Entity> results = datastore.run(query);
 
 		response.setContentType("text/html");
