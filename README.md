@@ -70,12 +70,13 @@ Scénario : `DownloadLimiter`
 - L'identifiant utilisé dans toutes les requêtes pour identifier l'utilisateur est son nom (au lieu de son email)
 - L'identifiant utilisé pour identifier un fichier est son nom avec son extension
 - Possibilité de "s'auto-boost" en téléchargeant ses propres fichiers.
+- Ne pas utiliser de fichiers contenant des espaces.
 
 ## TODO
 
 - Déduplication des fichiers
-- Verifier l'API admin (partie Particularités pour le projet)
-- Ne pas utiliser de fichiers contenant des espaces.
+
+
 
 ## Commands
 
