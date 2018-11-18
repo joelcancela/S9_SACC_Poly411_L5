@@ -43,19 +43,25 @@ https://polar-winter-218511.appspot.com/
     * On suggère d'utiliser `pikathor.png` à la racine du projet
     * Il faut s'assurer que le fichier à uploader est spécifié dans les requêtes d'upload. Passé un temps, Postman remet à zéro le body de la requête.
 
-### Création de 6 utilisateurs, 2 Noob, 2 Casual, 2 Leet
+### Execution
+
+>Utiliser l'option `Runner` de Postman, pour chaque scénario, dérouler les requêtes par Dossier.
+
+>S'assurer que les fichiers à upload sont spécifiés dans les requêtes.
+
+#### Création de 6 utilisateurs, 2 Noob, 2 Casual, 2 Leet
 
 Scénario : `UsersCreation`
 
-### Upload et Montée du score d'un Casual vers Leet
+#### Upload et Montée du score d'un Casual vers Leet
 
 Scénario : `UploadRewardLevelUpLeet`
 
-### Download et gain de points à l'uploader
+#### Download et gain de points à l'uploader
 
 Scénario : `DownloadReward`
 
-### Rate limiter et Téléchargement en parallèle pour différents utilisateurs
+#### Rate limiter et Téléchargement en parallèle pour différents utilisateurs
 
 Scénario : `DownloadLimiter`
 
