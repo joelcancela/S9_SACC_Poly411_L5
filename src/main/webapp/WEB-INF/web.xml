@@ -13,6 +13,9 @@
     <jsp-file>/download.jsp</jsp-file>
   </servlet>
   <servlet>
+    <jsp-file>/downloads.jsp</jsp-file>
+  </servlet>
+  <servlet>
     <jsp-file>/signup.jsp</jsp-file>
   </servlet>
   <servlet>

@@ -1,6 +1,8 @@
 package fr.unice.polytech.si5.cc.l5.model;
 
-import java.util.*;
+import com.google.gson.annotations.Expose;
+
+import java.util.OptionalLong;
 
 /**
  * Class User
@@ -8,15 +10,26 @@ import java.util.*;
  * @author Joël CANCELA VAZ
  */
 public class User {
+    @Expose
     private String email;
+    @Expose
     private String name;
+    @Expose
     private double score;
     private OptionalLong downloadTimestamp1 = OptionalLong.empty();
     private OptionalLong downloadTimestamp2 = OptionalLong.empty();
     private OptionalLong downloadTimestamp3 = OptionalLong.empty();
     private OptionalLong downloadTimestamp4 = OptionalLong.empty();
 
+    public User() {
+        this.downloadTimestamp1 = OptionalLong.empty();
+        this.downloadTimestamp2 = OptionalLong.empty();
+        this.downloadTimestamp3 = OptionalLong.empty();
+        this.downloadTimestamp4 = OptionalLong.empty();
+    }
+
     public User(String email, String name) {
+        this();
         this.email = email;
         this.score = 0.0;
         this.name = name;
