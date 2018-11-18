@@ -4,19 +4,20 @@
 <html>
 <head>
   <link href='//fonts.googleapis.com/css?family=Marmelad' rel='stylesheet' type='text/css'>
-  <title>Hello App Engine Standard Java 8</title>
+  <title>Poly411</title>
 </head>
 <body>
-    <h1>Hello App Engine -- Java 8!</h1>
+    <h1>Poly411 - Equipe de 5</h1>
 
-  <p>This is <%= HelloAppEngine.getInfo() %>.</p>
   <table>
     <tr>
       <td colspan="2" style="font-weight:bold;">Available Servlets:</td>
     </tr>
     <tr>
-      <td><a href='/hello'>Hello App Engine</a></td>
-      <td><a href='/upload'>Upload file</a></td>
+      <td><a href='/signup.jsp'>Sign up</a></td>
+      <td><a href='/upload.jsp'>Upload file</a></td>
+      <td><a href='/downloads.jsp'>Download file</a></td>
+      <td><a href='/users'>Scoreboard</a></td>
     </tr>
   </table>
 

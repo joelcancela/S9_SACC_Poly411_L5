@@ -1,7 +1,7 @@
 package fr.unice.polytech.si5.cc.l5;
 
 import com.google.cloud.datastore.*;
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fr.unice.polytech.si5.cc.l5.model.User;
 import fr.unice.polytech.si5.cc.l5.model.UserLevel;
 
@@ -53,7 +53,7 @@ public class UserServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 		BufferedReader reader = req.getReader();
-		User userInput = new Gson().fromJson(reader, User.class);
+		User userInput = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(reader, User.class);
 		IncompleteKey key = datastore.newKeyFactory().setKind("user").newKey();
 		FullEntity<IncompleteKey> aNewUser = FullEntity.newBuilder(key)
 				.set("name", userInput.getName())
