@@ -2,13 +2,46 @@
 
 ## Team members :
 
-	- Bounouas Nassim
-	- Cancela Vaz Joël
-	- Mortara Johann
-	- Novac Pierre-Emmanuel
-	- Rousseau Nikita
+    - Bounouas Nassim
+    - Cancela Vaz Joël
+    - Mortara Johann
+    - Novac Pierre-Emmanuel
+    - Rousseau Nikita
 
-## Launch
+## Main link
+
+https://polar-winter-218511.appspot.com/
+
+## What's done
+
+- Chaque utilisateur doit créer un compte (email comme identifiant). Lien: https://polar-winter-218511.appspot.com/signup.jsp
+
+- Un utilisateur se rend sur une page d'accueil où il peut uploader des fichiers. Lien: https://polar-winter-218511.appspot.com/upload.jsp
+
+- Upload:
+    - Chaque fichier uploadé a un identifiant unique qui peut être utilisé par d'autres utilisateurs pour le télécharger.
+
+    - À chaque fois qu'un fichier est uploadé, un email récapitulatif avec un lien de téléchargement est envoyé à l'utilisateur
+    - 1MB uploadé = 1 pt gagné
+- Download:
+    - Une requête est envoyée et par retour d'email on reçoit un lien vers le fichier demandé
+    - Ce lien est valide 5 minutes
+- Un système de score permet de récompenser les utilisateurs qui uploadent des fichiers populaires
+- Un leaderboard est accessible sous forme de page web. Lien: https://polar-winter-218511.appspot.com/users
+
+## Notes/Bugs
+
+- L'identifiant utilisé dans toutes les requêtes pour identifier l'utilisateur est son nom
+- L'identifiant utilisé pour identifier un fichier est son nom.
+- Possibilité de "s'auto-boost" en téléchargeant ses propres fichiers.
+
+## TODO
+
+- Déduplication des fichiers
+- Scénarios de test (partie Scénarios de test)
+- Verifier l'API admin (partie Particularités pour le projet)
+
+## Commands
 
 ### Launch DB
 
@@ -22,33 +55,14 @@ gcloud beta emulators datastore start # Local only
 launch_server.cmd
 ```
 
-## Create Bucket on Google Cloud Storage
-```
+### Create Bucket on Google Cloud Storage
+
+```bash
 gsutil mb gs://polar-winter-218511
 gsutil defacl set public-read gs://polar-winter-218511
 ```
 
-## Routes
-
-Host: https://polar-winter-218511.appspot.com/
-
-* `/users`
-    * GET → Scoreboard
-    * POST → Create a user, payload (JSON): ```{"email":"zb@hotmail.fr","name":"BondAge"}```
-* `/admin`
-    * POST → Force create user, 
-        - payload (JSON): ```{"email":"casu@hotmail.fr","name":"testCasu","score":120.0}```
-        - ```{"email":"leet@hotmail.fr","name":"testlee7","score":1337.7}```
-    * DELETE → Delete all data.   
-* `/createfile/polar-winter-218511/<filename>?size=<size>`
-    * GET → Create a file named `<filename>` of size `<size>` containing random data.
-* `/email`
-    * GET → Print an example of payload as `application/json` string.
-    * POST → Send an email.
-        - payload (`application/json`) :
-        - ```{"to":"<email>@gmail.com","to_meta":"Firstname LASTNAME","subject":"Testing Email Service Subject","body":"This is an example of email body"}```
-
-### Push an update to the magic cloud
+### Push an update to AppEngine
 
 ```bash
 mvn appengine:update
