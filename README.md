@@ -1,4 +1,4 @@
-# S9_SACC_Poly411_L5
+# SACC AppEngine Project: Poly411
 
 ## Team members :
 
@@ -39,7 +39,7 @@ https://polar-winter-218511.appspot.com/
   * Sur la collection, `Edit`, puis `Variables`
   * __Nota bene__ : ne pas confondre les dossiers et les collections.
   * La variable `USERNAME2` permet de télécharger le fichier sous un autre homonyme, de sorte à éviter la restriction de l'utilisateur ayant uploadé le fichier.
-  * Les fichiers à `UPLOADER` doivent être spécifiés en amont de l'execution du scénario !
+  * Les fichiers à `UPLOADER` doivent être spécifiés en amont de l'exécution du scénario !
     * On suggère d'utiliser `pikathor.png` à la racine du projet
     * Il faut s'assurer que le fichier à uploader est spécifié dans les requêtes d'upload. Passé un temps, Postman remet à zéro le body de la requête.
 
@@ -75,8 +75,6 @@ Scénario : `DownloadLimiter`
 ## TODO
 
 - Déduplication des fichiers
-
-
 
 ## Commands
 
